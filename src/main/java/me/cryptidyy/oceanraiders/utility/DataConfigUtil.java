@@ -33,7 +33,7 @@ public class DataConfigUtil {
 		for(int i = 1; i <= locations.size(); i++)
 		{
 			Location location = locations.get(i-1);
-			saveLocation(location, section.createSection(".dock" + i));
+			saveLocation(location, section.createSection(".loc" + i));
 		}
 	}
 

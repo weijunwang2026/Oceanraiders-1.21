@@ -3,6 +3,8 @@ package me.cryptidyy.oceanraiders;
 import me.cryptidyy.coreapi.api.API;
 import me.cryptidyy.oceanraiders.gamemap.GameMap;
 import me.cryptidyy.oceanraiders.gamemap.LocalGameMap;
+import me.cryptidyy.oceanraiders.lobby.LobbyManager;
+import me.cryptidyy.oceanraiders.lobby.LobbySetupManager;
 import me.cryptidyy.oceanraiders.sql.SQLHelper;
 import me.cryptidyy.oceanraiders.state.EndState;
 import org.bukkit.Bukkit;
@@ -27,11 +29,11 @@ import java.util.List;
 public class Main extends JavaPlugin {
 
 	private IslandManager islandManager;
+	private LobbyManager lobbyManager;
 	private GameManager gameManager;
 	private OceanItemManager itemManager;
 
 	private List<Listener> registeredListeners = new ArrayList<>();
-	//public MySQL SQL;
 	private SQLHelper sqlHelper;
 
 	private GameMap currentMap;
@@ -39,21 +41,37 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onEnable()
 	{
-		checkIfBungee();
-		//this.SQL = new MySQL();
-		//connectToSQL();
-		//sqlHelper = new SQLHelper(SQL);
+		getDataFolder().mkdir();
+		if(!checkIfBungee()) return;
+
 		File gameMapFile = new File(getDataFolder(), "gamemaps");
-		this.currentMap = new LocalGameMap(gameMapFile, "oceanraiders", true);
-		this.gameManager = new GameManager(this);
+		if (!gameMapFile.exists())
+		{
+			gameMapFile.mkdir();
+		}
+        try {
+            this.currentMap = new LocalGameMap(gameMapFile, "oceanraiders", true);
+        } catch (Exception e) {
+			getLogger().severe("The arena world folder is invalid, please import a world. Shutting down...");
+			getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+		if(!currentMap.isLoaded())
+		{
+			getLogger().severe("The arena world failed to load. Shutting down...");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+        this.gameManager = new GameManager(this);
 
 		Bukkit.getScheduler().runTaskLater(this, () ->
 		{
 			this.islandManager = new IslandManager(this);
+			this.lobbyManager = new LobbyManager(this);
 			this.itemManager = new OceanItemManager(this);
 
 			this.getServer().getPluginManager().registerEvents(new IslandSetupManager(islandManager), this);
-
+			this.getServer().getPluginManager().registerEvents(new LobbySetupManager(lobbyManager), this);
 			String fullPackageName = this.getClass().getPackage().getName();
 
 			this.getCommand("orsetup").setExecutor(new SetupCommands(this));
@@ -112,20 +130,22 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable()
 	{
-		try {
-			if(!(gameManager.getGameState() instanceof EndState))
-				gameManager.setState(new EndState());
-		} catch (Exception e) {
-
-		}
-		gameManager.onDisable();
+		currentMap.unload();
 		HandlerList.unregisterAll(this);
 		API.getInstance().getStatusUpdater().setStarted(false);
 		API.getInstance().getStatusUpdater().setWaiting(false);
+
+		if(gameManager != null)
+		{
+			gameManager.onDisable();
+		}
 	}
 
 	public IslandManager getIslandManager() {
 		return islandManager;
+	}
+	public LobbyManager getLobbyManager() {
+		return lobbyManager;
 	}
 	public GameManager getGameManager() {
 		return this.gameManager;
@@ -134,15 +154,17 @@ public class Main extends JavaPlugin {
 		return itemManager;
 	}
 
-	private void checkIfBungee()
+	private boolean checkIfBungee()
 	{
 		if (!getServer().spigot().getConfig().getConfigurationSection("settings").getBoolean("bungeecord"))
 		{
 			getLogger().severe( "This server is not BungeeCord." );
-			getLogger().severe( "If the server is already hooked to BungeeCord, please enable it into your spigot.yml as well." );
-			getLogger().severe( "Plugin disabled!" );
-			getServer().getPluginManager().disablePlugin( this );
+			getLogger().severe( "If the server is already hooked to BungeeCord, please enable it in your spigot.yml as well." );
+			getLogger().severe( "Shutting down..." );
+			getServer().getPluginManager().disablePlugin(this);
+			return false;
 		}
+		return true;
 	}
 	private static String getServerName(DataManager dataManager)
 	{

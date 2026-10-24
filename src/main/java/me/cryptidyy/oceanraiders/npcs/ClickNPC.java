@@ -21,7 +21,11 @@ public class ClickNPC implements Listener {
 	{
 		Player player = event.getPlayer();
 		Entity villager = event.getRightClicked(); //entity type doesn't matter
-		
+
+		if(villager.getCustomName() == null)
+		{
+			return;
+		}
 		if(villager.getCustomName().contains("BLACKSMITH"))
 		{
 			event.setCancelled(true);

@@ -5,6 +5,8 @@ import java.util.*;
 import me.cryptidyy.oceanraiders.Main;
 import me.cryptidyy.oceanraiders.utility.ChatUtil;
 import org.bukkit.*;
+import org.bukkit.block.Barrel;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,18 +39,12 @@ public class IslandSetupManager implements Listener {
 	private final String SET_LOCATION_FARMER = ChatColor.GREEN + "Set Farmer Location " + ChatColor.GRAY+ "(Right Click)";
 	private final String SET_LOCATION_WITCH = ChatColor.GREEN + "Set Witch Location " + ChatColor.GRAY+ "(Right Click)";
 	private final String ADD_LOCATION_DOCKS = ChatColor.GREEN + "Add Dock Location " + ChatColor.GRAY+ "(Right Click)";
-	private final String SET_LOCATION_DOCKS = ChatColor.GREEN + "Finish and save Dock Locations " + ChatColor.GRAY+ "(Right Click)";
-
+	private final String SET_LOCATION_DOCKS = ChatColor.GREEN + "Save/Cancel Dock Locations " + ChatColor.GRAY+ "(Right Click to save, Left Click to cancel)";
 	private final String SET_LOCATION_CORNER_ONE_WAIT = ChatColor.GREEN + "Set Waiting Lobby Corner 1 " + ChatColor.GRAY + "(Right Click)";
-
 	private final String SET_LOCATION_CORNER_TWO_WAIT = ChatColor.GREEN + "Set Waiting Lobby Corner 2 " + ChatColor.GRAY + "(Right Click)";
-
 	private final String SET_LOCATION_RESPAWN = ChatColor.GREEN + "Set Respawn Location " + ChatColor.GRAY + "(Right Click)";
-
 	private final String ADD_REMOVE_LOCATION_LOOT = ChatColor.GREEN + "Add/Remove General Loot Container " + ChatColor.GRAY + "(Right Click to add, Left Click to remove)";
-
 	private final String SET_LOCATION_LOOT = ChatColor.GREEN + "Save General Loot Containers " + ChatColor.GRAY + "(Right Click)";
-
 
 	public IslandSetupManager(IslandManager islandManager)
 	{
@@ -222,8 +218,6 @@ public class IslandSetupManager implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onInteract(PlayerInteractEvent event)
 	{
-
-
 		if(!inSetupMode(event.getPlayer())) return;
 		if(!event.hasItem()) return;
 		//if(!event.getItem().hasItemMeta()) return;
@@ -264,9 +258,10 @@ public class IslandSetupManager implements Listener {
 		}
 		else if(itemName.equalsIgnoreCase(CHEST_ITEM_NAME))
 		{
-			if(event.getClickedBlock() == null)
+			if(event.getClickedBlock() == null || !(event.getClickedBlock().getState() instanceof Chest))
 			{
-				player.sendMessage(ChatUtil.format("&cPlease click on a block for this setting!"));
+				player.sendMessage(ChatUtil.format("&cPlease click on a chest for this setting!"));
+				event.setCancelled(true);
 				return;
 			}
 			tempIsland.setChestLoc(event.getClickedBlock().getLocation());
@@ -274,9 +269,10 @@ public class IslandSetupManager implements Listener {
 		}
 		else if(itemName.equalsIgnoreCase(LOOT_ONE_NAME))
 		{
-			if(event.getClickedBlock() == null)
+			if(event.getClickedBlock() == null || !(event.getClickedBlock().getState() instanceof Chest))
 			{
-				player.sendMessage(ChatUtil.format("&cPlease click on a block for this setting!"));
+				player.sendMessage(ChatUtil.format("&cPlease click on a chest for this setting!"));
+				event.setCancelled(true);
 				return;
 			}
 			tempIsland.setLootChestOne(event.getClickedBlock().getLocation());
@@ -284,9 +280,10 @@ public class IslandSetupManager implements Listener {
 		}
 		else if(itemName.equalsIgnoreCase(LOOT_TWO_NAME))
 		{
-			if(event.getClickedBlock() == null)
+			if(event.getClickedBlock() == null || !(event.getClickedBlock().getState() instanceof Chest))
 			{
-				player.sendMessage(ChatUtil.format("&cPlease click on a block for this setting!"));
+				player.sendMessage(ChatUtil.format("&cPlease click on a chest for this setting!"));
+				event.setCancelled(true);
 				return;
 			}
 			tempIsland.setLootChestTwo(event.getClickedBlock().getLocation());
@@ -294,9 +291,10 @@ public class IslandSetupManager implements Listener {
 		}
 		else if(itemName.equalsIgnoreCase(LOOT_THREE_NAME))
 		{
-			if(event.getClickedBlock() == null)
+			if(event.getClickedBlock() == null || !(event.getClickedBlock().getState() instanceof Chest))
 			{
-				player.sendMessage(ChatUtil.format("&cPlease click on a block for this setting!"));
+				player.sendMessage(ChatUtil.format("&cPlease click on a chest for this setting!"));
+				event.setCancelled(true);
 				return;
 			}
 			tempIsland.setLootChestThree(event.getClickedBlock().getLocation());
@@ -329,16 +327,22 @@ public class IslandSetupManager implements Listener {
 		}
 		else if(itemName.equalsIgnoreCase(SET_LOCATION_DOCKS))
 		{
-			tempIsland.setDockLocations(new ArrayList<>(dockLocations));
-			player.sendMessage(ChatColor.AQUA + "Set all dock locations!");
+			if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+				tempIsland.setDockLocations(new ArrayList<>(dockLocations));
+				player.sendMessage(ChatColor.AQUA + "Saved all dock locations!");
+			}
+			else if(event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))
+			{
+				player.sendMessage(ChatColor.RED + "Canceled dock location setup");
+			}
 			dockLocations.clear();
-
 		}
 		else if(itemName.equalsIgnoreCase(SET_LOCATION_CORNER_ONE_WAIT))
 		{
 			if(event.getClickedBlock() == null)
 			{
 				player.sendMessage(ChatUtil.format("&cPlease click on a block for this setting!"));
+				event.setCancelled(true);
 				return;
 			}
 			tempIsland.setWaitCornerOne(event.getClickedBlock().getLocation());
@@ -349,6 +353,7 @@ public class IslandSetupManager implements Listener {
 			if(event.getClickedBlock() == null)
 			{
 				player.sendMessage(ChatUtil.format("&cPlease click on a block for this setting!"));
+				event.setCancelled(true);
 				return;
 			}
 			tempIsland.setWaitCornerTwo(event.getClickedBlock().getLocation());
@@ -361,9 +366,12 @@ public class IslandSetupManager implements Listener {
 		}
 		else if(itemName.equalsIgnoreCase(ADD_REMOVE_LOCATION_LOOT))
 		{
-			if(event.getClickedBlock() == null)
+			if(event.getClickedBlock() == null ||
+					(!(event.getClickedBlock().getState() instanceof Barrel)
+					&& !(event.getClickedBlock().getState() instanceof Chest)))
 			{
-				player.sendMessage(ChatUtil.format("&cPlease click on a block for this setting!"));
+				player.sendMessage(ChatUtil.format("&cPlease click on a barrel or chest for this setting!"));
+				event.setCancelled(true);
 				return;
 			}
 
@@ -372,6 +380,7 @@ public class IslandSetupManager implements Listener {
 				if(containsLocation(lootLocations, event.getClickedBlock().getLocation()))
 				{
 					player.sendMessage(ChatColor.RED + "Location already exists!");
+					event.setCancelled(true);
 					return;
 				}
 				lootLocations.add(event.getClickedBlock().getLocation());
@@ -382,6 +391,7 @@ public class IslandSetupManager implements Listener {
 				if(!containsLocation(lootLocations, event.getClickedBlock().getLocation()))
 				{
 					player.sendMessage(ChatColor.RED + "No loot container set!");
+					event.setCancelled(true);
 					return;
 				}
 				lootLocations.remove(event.getClickedBlock().getLocation());
@@ -401,19 +411,19 @@ public class IslandSetupManager implements Listener {
 				Location[] newCorners = fixCorners(cornerOne, cornerTwo);
 				tempIsland.setCornerOne(newCorners[0]);
 				tempIsland.setCornerTwo(newCorners[1]);
-			}		
+			}
 			catch(Exception e)
 			{
-				
+				player.sendMessage(ChatColor.RED + "Missing two island corners");
 			}
 
 			if(tempIsland.toIsland() != null)
 			{
 				player.sendMessage(ChatColor.GREEN+"Saved island!");
-				
-				if(islandManager == null) player.sendMessage("Island manager is null!");
+
 				islandManager.saveIslandtoConfig(tempIsland.toIsland());
 				removeFromSetup(player);
+				event.setCancelled(true);
 				return;
 			}
 			
@@ -421,10 +431,8 @@ public class IslandSetupManager implements Listener {
 		}
 		else
 		{
-			Bukkit.broadcastMessage("No match for " + event.getItem().getItemMeta().getDisplayName());
 			return;
 		}
-		
 		event.setCancelled(true);
 	}
 
@@ -436,5 +444,4 @@ public class IslandSetupManager implements Listener {
 		}
 		return false;
 	}
-	
 }

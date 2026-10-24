@@ -17,6 +17,7 @@ me\cryptidyy\oceanraiders\npcs\ClickNPC.class
 me\cryptidyy\oceanraiders\sql\OceanQueueListener.class
 me\cryptidyy\oceanraiders\utility\PlayerRollbackManager.class
 me\cryptidyy\oceanraiders\activelisteners\LootChestEvent.class
+me\cryptidyy\oceanraiders\lobby\LobbySetupManager.class
 me\cryptidyy\oceanraiders\gamemap\GameMap.class
 me\cryptidyy\oceanraiders\serverlisteners\InteractEvent.class
 me\cryptidyy\oceanraiders\customitems\BoatSinker$4.class
@@ -29,7 +30,6 @@ me\cryptidyy\oceanraiders\activelisteners\PlayerAttackEvent.class
 me\cryptidyy\oceanraiders\lobbylisteners\OceanJoinHandler.class
 me\cryptidyy\oceanraiders\state\GameManager.class
 me\cryptidyy\oceanraiders\state\EndState.class
-me\cryptidyy\oceanraiders\scoreboard\ScoreboardManager1.class
 me\cryptidyy\oceanraiders\shop\ItemEntryManager.class
 me\cryptidyy\oceanraiders\player\TransferedItemsManager.class
 me\cryptidyy\oceanraiders\sql\SQLHelper.class
@@ -66,6 +66,7 @@ me\cryptidyy\oceanraiders\utility\Hologram.class
 me\cryptidyy\oceanraiders\player\PlayerManager.class
 me\cryptidyy\oceanraiders\customitems\WholeCake.class
 me\cryptidyy\oceanraiders\sql\MySQL.class
+me\cryptidyy\oceanraiders\lobby\Lobby.class
 me\cryptidyy\oceanraiders\state\GameState.class
 me\cryptidyy\oceanraiders\activelisteners\RespawnEvent.class
 me\cryptidyy\oceanraiders\npcs\PotionNPC.class
@@ -82,7 +83,6 @@ me\cryptidyy\oceanraiders\customitems\OceanItem.class
 me\cryptidyy\oceanraiders\state\WaitingArenaState.class
 me\cryptidyy\oceanraiders\utility\ItemBuilder.class
 me\cryptidyy\oceanraiders\shop\EnchantManager.class
-me\cryptidyy\oceanraiders\utility\Hologram1$IChatBaseComponent.class
 me\cryptidyy\oceanraiders\commands\TestCommands.class
 me\cryptidyy\oceanraiders\npcs\BlackSmithNPC.class
 me\cryptidyy\oceanraiders\loot\LootChest.class
@@ -91,7 +91,6 @@ me\cryptidyy\oceanraiders\shop\FoodShop.class
 me\cryptidyy\oceanraiders\customitems\CobwebWall.class
 me\cryptidyy\oceanraiders\shop\InventoryShop.class
 me\cryptidyy\oceanraiders\customitems\FlyingTrident.class
-me\cryptidyy\oceanraiders\utility\Hologram1.class
 me\cryptidyy\oceanraiders\shop\EnchantShop.class
 me\cryptidyy\oceanraiders\activelisteners\RemoveHelmetEvent.class
 me\cryptidyy\oceanraiders\customitems\BoatSinker$3.class
@@ -106,10 +105,11 @@ me\cryptidyy\oceanraiders\islands\Island.class
 me\cryptidyy\oceanraiders\player\OceanPlayer$1.class
 me\cryptidyy\oceanraiders\loot\Entry.class
 me\cryptidyy\oceanraiders\activelisteners\InvisWalkEvent.class
-me\cryptidyy\oceanraiders\scoreboard\ScoreboardManager1$1.class
+me\cryptidyy\oceanraiders\lobby\LobbyManager.class
 me\cryptidyy\oceanraiders\npcs\FoodNPC.class
 me\cryptidyy\oceanraiders\commands\GameCommands.class
 me\cryptidyy\oceanraiders\loot\LootChestManager.class
+me\cryptidyy\oceanraiders\lobby\TemporaryLobby.class
 me\cryptidyy\oceanraiders\scoreboard\GameScoreboardManager$1.class
 me\cryptidyy\oceanraiders\activelisteners\TreasureEvent.class
 me\cryptidyy\oceanraiders\customitems\TeleportTrident.class

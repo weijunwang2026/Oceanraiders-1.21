@@ -14,9 +14,14 @@ public class LocalGameMap implements GameMap {
 
     private World bukkitWorld = null;
 
-    public LocalGameMap(File worldFolder, String worldName, boolean loadOnInit)
+    public LocalGameMap(File worldFolder, String worldName, boolean loadOnInit) throws Exception
     {
         this.sourceWorldFolder = new File(worldFolder, worldName);
+        if (!sourceWorldFolder.exists())
+        {
+            sourceWorldFolder.mkdir();
+            throw new Exception();
+        }
 
         if(loadOnInit) load();
     }

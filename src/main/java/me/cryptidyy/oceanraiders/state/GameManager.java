@@ -110,7 +110,6 @@ public class GameManager {
 
 	public void onDisable()
 	{
-		plugin.getCurrentMap().unload();
 		this.queueListener.cancel();
 	}
 
@@ -132,9 +131,10 @@ public class GameManager {
 	{
 		if(state instanceof WaitingArenaState || state instanceof StartCountdownState)
 			lobbyPlayers.add(player.getUniqueId());
-
+		Location lobbySpawn = plugin.getLobbyManager().getLobby().getSpawn();
 		//teleport player to lobby
-		player.teleport(new Location(this.gameWorld, -147.5, 109, -13.5));
+		player.teleport(new Location(this.gameWorld, lobbySpawn.getX(),
+				lobbySpawn.getY(), lobbySpawn.getZ(), lobbySpawn.getYaw(), lobbySpawn.getPitch()));
 		player.setHealth(20);
 		player.setFoodLevel(20);
 		player.getInventory().clear();
@@ -518,8 +518,8 @@ public class GameManager {
 
 	public Location[] getLobbyLocations()
 	{
-		return new Location[] {this.getIslandManager().getIslands().get(0).getWaitCornerOne(),
-				this.getIslandManager().getIslands().get(0).getWaitCornerTwo()};
+		return new Location[] {plugin.getLobbyManager().getLobby().getCorner1(),
+				plugin.getLobbyManager().getLobby().getCorner2()};
 	}
 
 	public OceanJoinHandler getJoinHandler()

@@ -27,17 +27,24 @@ public class IslandManager {
 	public IslandManager(Main plugin)
 	{
 		this.plugin = plugin;
-		this.islandData = new DataManager(this.plugin, "islands.yml");
-		
+
+		islandData = new DataManager(this.plugin, "islands.yml");
+		reloadIslands();
+		islandSetupManager = new IslandSetupManager(this);
+	}
+
+	public void reloadIslands()
+	{
+		islandList.clear();
 		this.islandData.reloadConfig();
-		
+
 		try
 		{
 			for(String islandName : this.islandData.getConfig().getKeys(false))
 			{
 				ConfigurationSection section = this.islandData.getConfig().getConfigurationSection(islandName);
 				String displayName = section.getString("displayName");
-				
+
 				Location spawnLoc = DataConfigUtil.readLocation(section.getConfigurationSection("spawnLoc"));
 				Location dropLoc = DataConfigUtil.readLocation(section.getConfigurationSection("dropLoc"));
 				Location cornerOne = DataConfigUtil.readLocation(section.getConfigurationSection("cornerOne"));
@@ -61,15 +68,15 @@ public class IslandManager {
 				//Blacksmith
 				//Librarian
 				//Witch
-				
-				Island island = new Island(displayName, 
-						cornerOne, 
-						cornerTwo, 
-						spawnLoc, 
-						dropLoc, 
-						chestLoc, 
-						lootChestOne, 
-						lootChestTwo, 
+
+				Island island = new Island(displayName,
+						cornerOne,
+						cornerTwo,
+						spawnLoc,
+						dropLoc,
+						chestLoc,
+						lootChestOne,
+						lootChestTwo,
 						lootChestThree,
 						blackSmith,
 						librarian,
@@ -80,7 +87,7 @@ public class IslandManager {
 						waitCornerTwo,
 						respawnLoc,
 						lootContainers);
-				
+
 				islandList.add(island);
 			}
 		}
@@ -88,9 +95,6 @@ public class IslandManager {
 		{
 			e.printStackTrace();
 		}
-
-		this.islandSetupManager = new IslandSetupManager(this);
-		
 	}
 	
 	public void saveIslandtoConfig(Island island)
@@ -131,6 +135,7 @@ public class IslandManager {
 		//Witch
 		
 		this.islandData.saveConfig();
+		reloadIslands();
 	}
 	
 	public List<Island> getIslands()

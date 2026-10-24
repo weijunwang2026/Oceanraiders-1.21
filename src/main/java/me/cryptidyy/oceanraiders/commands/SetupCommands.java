@@ -2,6 +2,9 @@ package me.cryptidyy.oceanraiders.commands;
 
 import java.util.Optional;
 
+import me.cryptidyy.oceanraiders.lobby.Lobby;
+import me.cryptidyy.oceanraiders.lobby.LobbyManager;
+import me.cryptidyy.oceanraiders.lobby.TemporaryLobby;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,7 +45,7 @@ public class SetupCommands implements CommandExecutor {
 						player.sendMessage(ChatColor.RED + "Island name can't be empty");
 						return true;
 					}
-					 
+					plugin.getIslandManager().reloadIslands();
 					Optional<Island> optionalIsland = plugin.getIslandManager().findIsland(islandName);
 					if(optionalIsland.isPresent())
 					{
@@ -55,7 +58,6 @@ public class SetupCommands implements CommandExecutor {
 					
 					plugin.getIslandManager().getIslandSetupManager().addToSetup(player, tempIsland);
 					return true;
-					
 				}
 				
 				else if(args[0].equalsIgnoreCase("delete"))
@@ -89,10 +91,28 @@ public class SetupCommands implements CommandExecutor {
 					
 					return true;
 				}
+				else if(args[0].equalsIgnoreCase("lobby"))
+				{
+					LobbyManager lobbyManager = plugin.getLobbyManager();
+					lobbyManager.reloadLobby();
+					Lobby currLobby = lobbyManager.getLobby();
+					TemporaryLobby tempLobby = null;
+					if(currLobby != null)
+					{
+						player.sendMessage("Copying previous settings...");
+						tempLobby = new TemporaryLobby(currLobby);
+					}
+					else
+					{
+						tempLobby = new TemporaryLobby();
+					}
+					lobbyManager.getLobbySetupManager().addToSetup(player, tempLobby);
+					return true;
+				}
 				
 				else
 				{
-					player.sendMessage(ChatColor.RED+"Usage: /orsetup [setup|delete|list]");
+					player.sendMessage(ChatColor.RED+"Usage: /orsetup [setup | delete | list | lobby]");
 					return true;
 				}
 				//Spawn location

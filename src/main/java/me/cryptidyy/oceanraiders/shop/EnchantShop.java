@@ -340,18 +340,13 @@ public class EnchantShop implements Listener {
 	
 	public void displayBooks(List<EnchantFamily> books, Inventory inv)
 	{
-		for(int x = 10; x <= 16; x++)
+		if (books == null) return;
+
+		for(int x = 10; x < 10 + books.size(); x++)
 		{
-			try
+			if(books.get(x - 10).getCurrentLevel() != -1)
 			{
-				if(books.get(x - 10).getCurrentLevel() != -1)
-				{
-					inv.setItem(x, books.get(x - 10).toBook());
-				}
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
+				inv.setItem(x, books.get(x - 10).toBook());
 			}
 		}
 	}

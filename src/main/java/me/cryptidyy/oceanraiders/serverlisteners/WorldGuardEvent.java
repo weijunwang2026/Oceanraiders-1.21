@@ -89,9 +89,9 @@ public class WorldGuardEvent implements Listener {
 		if(PlayerManager.toOceanPlayer(event.getPlayer()).isRespawning()) return;
 		
 		//if player gets out of arena
-		if(event.getTo().getY() > 92)
+		if(event.getTo().getY() > 130)
 		{
-			if(event.getFrom().getY() > 92)
+			if(event.getFrom().getY() > 130)
 			{
 				//big problem
 				if(PlayerManager.toOceanPlayer(event.getPlayer()).getPlayerTeam().getTeamName().contains("Red"))
@@ -114,8 +114,8 @@ public class WorldGuardEvent implements Listener {
 
 		}
 
-		Location arenaCornerOne  = new Location(manager.getGameWorld(), 245, 100, -106);
-		Location arenaCornerTwo = new Location(manager.getGameWorld(), -551, 0, 237);
+		Location arenaCornerOne  = new Location(manager.getGameWorld(), -2, 121, -5);
+		Location arenaCornerTwo = new Location(manager.getGameWorld(), 46, 0, 20);
 
 		if(!isInRect(event.getPlayer().getLocation(), arenaCornerOne, arenaCornerTwo))
 		{
