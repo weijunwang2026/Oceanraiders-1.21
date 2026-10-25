@@ -32,3 +32,20 @@ This plugin implements OceanRaiders, a game complete with pvp, custom items, GUI
 6. Run /orsetup lobby to setup the waiting lobby (where players wait for the countdown)
 7. Test your arena by running /setstate active to force-start the game. Normally, the game starts automatically when at least two players join.
 
+## Config Files ##
+
+The config files for this plugin enables customization:
+* armors - items for the armor shop
+* bows - items for the archery shop
+* customitems - display-items for custom items
+* enchants - available enchants for each armoury
+* food - items for the food shop
+* genericloot - loot table for loot scattered around the arena
+* islands - saves arena configurations
+* lobby - saves waiting lobby configurations
+* loot - loot table for the three loot chests on each team
+* potion - items for the potion shop
+* splash_potion - items for the splash potion shop
+* swords - items for the swords shop
+* transferreditems - items transferred to the player that kill another player
+  
