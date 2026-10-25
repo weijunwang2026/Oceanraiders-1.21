@@ -1,8 +1,8 @@
 # Oceanraiders - A Minecraft Minigame #
 
-## A minigame plugin for Spigot server in a Bungeecord network ##
+## A minigame plugin for Spigot server in a BungeeCord network ##
 
-This plugin implements OceanRaiders, a game complete with pvp, custom items, GUI shops, and more. Some features include:
+This plugin implements Oceanraiders, a game complete with pvp, custom items, GUI shops, and more. Some features include:
 
 * Game world importing and arena setup wizard, with automatic resetting after each game
 * Custom items with modified behaviors
@@ -23,13 +23,13 @@ This plugin implements OceanRaiders, a game complete with pvp, custom items, GUI
 
 ## Plugin Installation ##
 
-0. Create and setup a Bungeecord network with a lobby and a game server where this plugin will be installed. Create a MySQL database for plugin communication. Setup the Bungee-Core-Plugin along with the dependencies using the links above.
-1. Place this plugin in the plugins folder on the game server and start it. This will create the plugin folder.
-2. Import your game world into OceanRaiders-1.21/gamemaps, and name it "oceanraiders"
-3. Setup up the server id for this server for the core plugins (tutorial in the links above)
-4. Use /join oceanraiders to join the game arena, which we will use to set up (Note any changes you make to this world will disappear once the server restarts)
-5. Run /orsetup setup Blue Island to setup the blue island. Use the items to set the locations, and save the island at the end. Do this for both islands.
-6. Run /orsetup lobby to setup the waiting lobby (where players wait for the countdown)
+0. Set up a BungeeCord network with a lobby and a game server where this plugin will be installed. Set up a MySQL database for plugin communication. Set up the Bungee-Core-Plugin along with the dependencies using the links above.
+1. Place this plugin in the plugins folder and start the server. This will create the plugin folder and prompt you to import a world.
+2. Import your world folder into OceanRaiders-1.21/gamemaps, and name the folder "oceanraiders"
+3. Set up the serverid for this server in the Bungee and Spigot core plugins (tutorial in the links above)
+4. Use /join oceanraiders to join the game arena, which we will configure here (Note any changes made to this world disappears once the server restarts)
+5. Run /orsetup setup Blue Island to configure blue team's island. Set the locations around your world using the items in your inventory and save the island at the end. Do this for both islands.
+6. Run /orsetup lobby to configure the waiting lobby (the waiting lobby is removed upon game start)
 7. Test your arena by running /setstate active to force-start the game. Normally, the game starts automatically when at least two players join.
 
 ## Config Files ##
